@@ -62,17 +62,17 @@ def show_images_labels_predictions(images,labels,predictions,start_id,num=10):
         plt.show()
 if __name__ == '__main__':
     path = 'imageData/'
-    data = data()
-    data.train_feature = np.load(path+'train_feature.npy')
-    data.train_label = np.load(path+'train_label.npy')
-    data.test_feature = np.load(path+'test_feature.npy')
-    data.test_label = np.load(path+'test_label.npy')
-    data = preprocess_data(data)
     model =  None
     model = load_model('detect_animals.h5')
     if model is None:
         print('cannot load model')
         model = create_model()
+        data = data()
+        data.train_feature = np.load(path+'train_feature.npy')
+        data.train_label = np.load(path+'train_label.npy')
+        data.test_feature = np.load(path+'test_feature.npy')
+        data.test_label = np.load(path+'test_label.npy')
+        data = preprocess_data(data)
         train_histroy = model.fit(x=data.train_feature_normalize, y=data.train_label_onehot,
                               validation_split=0.2,epochs=10,batch_size=200,verbose=2)
     predictions = model.predict(data.test_feature_normailize)
